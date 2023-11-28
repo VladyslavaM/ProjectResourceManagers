@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вітання в Project Resource Manager</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: space-between; /* Розташовуємо контейнери по краях екрану */
+    align-items: center; /* Центруємо елементи по вертикалі */
+}
+
+.left-container,
+.right-container {
+    flex: 1; /* Розтягуємо контейнери на весь доступний простір */
+    text-align: center;
+}
+
+h1, p, button {
+    margin: 0 auto; /* Центруємо елементи відносно батьківських контейнерів */
+}
+
+h1 {
+    color: #008080;
+    font-size: 3em;
+    margin-bottom: 10px;
+    margin-left: 20px; /* Додаємо відступ від лівого краю */
+}
+
+p {
+    font-style: italic;
+    margin-bottom: 15px;
+    margin-left: 20px; /* Додаємо відступ від лівого краю */
+}
+
+button {
+    padding: 15px;
+    font-size: 18px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    max-width: 300px;
+    width: 100%;
+    border-radius: 5px;
+    display: block; /* Забезпечуємо, що кнопка буде на новому рядку */
+    margin: 15px auto; /* Додаємо відступи для розділення тексту та кнопки */
+}
+
+button:hover {
+    background-color: #333;
+}
+
+.additional-content {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column; /* Розташовуємо додатковий контент вертикально */
+    align-items: center; /* Центруємо елементи по горизонталі */
+}
+
+img {
+    width: 100%; /* Зображення розтягнеться на ширину батьківського контейнера */
+    height: 100vh; /* Зображення розтягнеться на висоту екрану */
+    object-fit: cover; /* Забезпечуємо, що зображення буде вписано в контейнер і відображатиметься на весь його розмір */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ласкаво просимо до <br> Project Resource Manager</h1>
+        <p>Цей веб-додаток допоможе вам вивчити нові речі та матеріали.</p>
+        <button id="startWorkButton">Почати</button>
+    </div>
+
+    <div class="additional-content">
+        <img src="{% static 'images/HR-management.jpg' %}" alt="Community Image">
+    </div>
+    <script>
+        // JavaScript, який обробляє натискання на кнопку "Почати роботу"
+        document.getElementById('startWorkButton').addEventListener('click', function () {
+            // Перенаправити на сторінку авторизації та реєстрації
+            window.location.href = "{% url 'dashboard' %}";
+        });
+    </script>
+</body>
+</html>

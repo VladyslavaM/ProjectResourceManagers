@@ -1,0 +1,67 @@
+.account {
+    float: right;
+    position: relative;
+    display: inline-block;
+}
+
+.account-button {
+    cursor: pointer;
+}
+
+.account-menu {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.account-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-menu li {
+    padding: 5px 10px;
+}
+
+.account:hover .account-menu {
+    display: block;
+}
+
+.resource-card, .project-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+.resource-card h3, .project-card h3 {
+    margin-top: 0;
+}
+
+.resource-form, .project-form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.resource-form input, .resource-form button, .project-form input, .project-form button, .project-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.resource-form button, .project-form button {
+    background-color: #0074e4;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.resource-form button:hover, .project-form button:hover {
+    background-color: #0050a1;
+}

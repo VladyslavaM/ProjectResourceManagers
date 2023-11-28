@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resource Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Стилі для шапки додатку */
+header {
+    background-color: #008080;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo h1 {
+    font-size: 24px;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.user-menu img {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.user-window {
+    display: none;
+    position: absolute;
+    top: 35px;
+    right: 10px;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-menu:hover .user-window {
+    display: block;
+}
+
+.user-window ul {
+    list-style: none;
+}
+
+.user-window li {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.user-window img {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Стилі для панелі інструментів */
+.toolbar {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.toolbar ul {
+    list-style: none;
+    display: flex;
+    padding: 10px;
+}
+
+.toolbar li {
+    margin: 0 10px;
+}
+
+.toolbar a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Стилі для контейнерів і карточок */
+.content {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.card p {
+    font-size: 14px;
+}
+</style>
+</head>
+<body>
+    <!-- Шапка додатку з користувачем -->
+    <header>
+        <div class="logo">
+            <h1>Resource Management</h1>
+        </div>
+        <div class="user-menu">
+            <img src="{% static 'user-icon.png' %}" alt="Користувач">
+            <div class="user-window">
+                <ul>
+                    <li><img src="{% static 'profile-icon.png' %}" alt="Профіль"> Профіль</li>
+                    <li><img src="{% static 'settings-icon.png' %}" alt="Налаштування"> Налаштування</li>
+                    <li><img src="{% static 'logout-icon.png' %}" alt="Вийти"> Вийти</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+   <!-- Панель інструментів -->
+<div class="toolbar">
+     <ul>
+    {% for project in projects %}
+        <li>
+            <a href="{% url 'create_project' project.id %}">{{ project.name }}</a>
+        </li>
+    {% endfor %}
+    <li>
+        <a href="{% url 'create_project' %}">Створити новий проект</a>
+    </li>
+</ul>
+
+</div>
+
+
+    <!-- Основна частина сторінки з контейнерами і карточками -->
+    <div class="content">
+        <!-- Контейнер "To Do" -->
+        <div class="container">
+            <h2>To Do</h2>
+            {% for task in todo_tasks %}
+                <div class="card">
+                    <h3>{{ project.name }}</h3>
+                    <p>{{ task.description }}</p>
+                    <p>Assigned to: {{ task.assigned_to.username }}</p>
+                    <p>Status: {{ task.status }}</p>
+                    <p>Due Date: {{ task.due_date }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Контейнер "Doing" -->
+        <div class="container">
+            <h2>Doing</h2>
+            <div class="card">
+                <h3>Завдання 3</h3>
+                <p>Опис завдання 3</p>
+            </div>
+            <div class="card">
+                <h3>Завдання 4</h3>
+                <p>Опис завдання 4</p>
+            </div>
+        </div>
+
+        <!-- Контейнер "Done" -->
+        <div class="container">
+            <h2>Done</h2>
+            <div class="card">
+                <h3>Завдання 5</h3>
+                <p>Опис завдання 5</p>
+            </div>
+            <div class="card">
+                <h3>Завдання 6</h3>
+                <p>Опис завдання 6</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

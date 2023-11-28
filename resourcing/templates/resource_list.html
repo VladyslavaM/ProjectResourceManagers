@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Управління ресурсами та проектами</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/resourse.css' %}">
+    <!-- Додайте інші стилі, скрипти та ресурси, які вам потрібні -->
+</head>
+<body>
+    <div class="header">
+        <!-- Панель з кнопками та вікно акаунту -->
+        <div class="account">
+            <a href="#" class="account-button">Акаунт</a>
+            <div class="account-menu">
+                <ul>
+                    <li><a href="#">Профіль</a></li>
+                    <li><a href="#">Вихід</a></li>
+                </ul>
+            </div>
+        </div>
+        <ul class="nav">
+            <li><a href="{% url 'project_list' %}">Проекти</a></li>
+            <li><a href="{% url 'task_list' %}">Завдання</a></li>
+            <li><a href="{% url 'resource_list' %}">Ресурси</a></li>
+            <!-- Додайте інші кнопки за необхідності -->
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="resource-card">
+            <!-- Додавання ресурсу -->
+            <h3>Додати ресурс</h3>
+            <form class="resource-form">
+                <input type="text" placeholder="Назва ресурсу" name="resource-name">
+                <input type="text" placeholder="Тип ресурсу" name="resource-type">
+                <input type="number" placeholder="Доступність" name="resource-availability">
+                <input type="text" placeholder="Категорія" name="resource-category">
+                <input type="number" placeholder="Вартість" name="resource-cost">
+                <button type="submit">Зберегти</button>
+            </form>
+        </div>
+
+        <div class="project-card">
+            <!-- Створення проекту -->
+            <h3>Створити проект</h3>
+            <form class="project-form">
+                <input type="text" placeholder="Назва проекту" name="project-name">
+                <textarea placeholder="Опис проекту" name="project-description"></textarea>
+                <input type="date" placeholder="Початкова дата" name="project-start-date">
+                <input type="date" placeholder="Кінцева дата" name="project-end-date">
+                <input type="text" placeholder="Менеджер" name="project-manager">
+                <input type="text" placeholder="Статус" name="project-status">
+                <button type="submit">Створити</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
