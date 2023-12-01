@@ -9,7 +9,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('name', 'project', 'assigned_to', 'status', 'due_date')
+    list_display = ('name', 'description', 'project', 'assigned_to', 'status', 'due_date', 'end_date')
 
 
 @admin.register(Resource)

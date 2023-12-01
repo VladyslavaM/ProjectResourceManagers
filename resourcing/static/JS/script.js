@@ -34,4 +34,50 @@ $(document).ready(function() {
       }
     }
   });
+
+  // Обробка форми реєстрації
+   $('#signup-form').submit(function(event) {
+    event.preventDefault();
+
+    // Збір CSRF токену
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    $.ajax({
+      url: '/signup/',  // Замініть це на ваш URL для реєстрації
+      type: 'POST',
+      data: $(this).serialize(),
+      headers: {'X-CSRFToken': csrftoken},  // Додайте CSRF токен у заголовки
+      success: function(response) {
+        // Обробка успішного виконання
+        console.log(response);
+      },
+      error: function(error) {
+        // Обробка помилок
+        console.log(error);
+      }
+    });
+  });
+
+  // Обробка форми входу
+  $('#login-form').submit(function(event) {
+    event.preventDefault();
+
+    // Збір CSRF токену
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    $.ajax({
+      url: '/login/',  // Замініть це на ваш URL для входу
+      type: 'POST',
+      data: $(this).serialize(),
+      headers: {'X-CSRFToken': csrftoken},  // Додайте CSRF токен у заголовки
+      success: function(response) {
+        // Обробка успішного виконання
+        console.log(response);
+      },
+      error: function(error) {
+        // Обробка помилок
+        console.log(error);
+      }
+    });
+  });
 });

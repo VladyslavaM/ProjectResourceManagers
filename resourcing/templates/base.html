@@ -11,31 +11,31 @@ body {
     height: 100vh;
     margin: 0;
     display: flex;
-    justify-content: space-between; /* Розташовуємо контейнери по краях екрану */
-    align-items: center; /* Центруємо елементи по вертикалі */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .left-container,
 .right-container {
-    flex: 1; /* Розтягуємо контейнери на весь доступний простір */
+    flex: 1;
     text-align: center;
 }
 
 h1, p, button {
-    margin: 0 auto; /* Центруємо елементи відносно батьківських контейнерів */
+    margin: 0 auto;
 }
 
 h1 {
     color: #008080;
     font-size: 3em;
     margin-bottom: 10px;
-    margin-left: 20px; /* Додаємо відступ від лівого краю */
+    margin-left: 20px;
 }
 
 p {
     font-style: italic;
     margin-bottom: 15px;
-    margin-left: 20px; /* Додаємо відступ від лівого краю */
+    margin-left: 20px;
 }
 
 button {
@@ -48,8 +48,8 @@ button {
     max-width: 300px;
     width: 100%;
     border-radius: 5px;
-    display: block; /* Забезпечуємо, що кнопка буде на новому рядку */
-    margin: 15px auto; /* Додаємо відступи для розділення тексту та кнопки */
+    display: block;
+    margin: 15px auto;
 }
 
 button:hover {
@@ -59,8 +59,8 @@ button:hover {
 .additional-content {
     margin-top: 30px;
     display: flex;
-    flex-direction: column; /* Розташовуємо додатковий контент вертикально */
-    align-items: center; /* Центруємо елементи по горизонталі */
+    flex-direction: column;
+    align-items: center;
 }
 
 img {
@@ -81,9 +81,8 @@ img {
         <img src="{% static 'images/HR-management.jpg' %}" alt="Community Image">
     </div>
     <script>
-        // JavaScript, який обробляє натискання на кнопку "Почати роботу"
+
         document.getElementById('startWorkButton').addEventListener('click', function () {
-            // Перенаправити на сторінку авторизації та реєстрації
             window.location.href = "{% url 'dashboard' %}";
         });
     </script>

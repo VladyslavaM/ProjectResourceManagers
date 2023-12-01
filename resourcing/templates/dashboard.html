@@ -61,6 +61,7 @@ header {
     margin: 5px 0;
     display: flex;
     align-items: center;
+    color: black;
 }
 
 .user-window img {
@@ -91,7 +92,8 @@ header {
     text-decoration: none;
     color: white;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
+    margin-right: 10px;
 }
 
 /* Стилі для контейнерів і карточок */
@@ -138,12 +140,12 @@ h2 {
             <h1>Resource Management</h1>
         </div>
         <div class="user-menu">
-            <img src="{% static 'user-icon.png' %}" alt="Користувач">
+            <img src="{% static 'images/HR-management.jpg' %}" alt="Користувач">
             <div class="user-window">
                 <ul>
-                    <li><img src="{% static 'profile-icon.png' %}" alt="Профіль"> Профіль</li>
-                    <li><img src="{% static 'settings-icon.png' %}" alt="Налаштування"> Налаштування</li>
-                    <li><img src="{% static 'logout-icon.png' %}" alt="Вийти"> Вийти</li>
+                    <li><img src="{% static 'images/42.jpg' %}" alt="Профіль"> Профіль</li>
+                    <li><img src="{% static 'images/risk.jpg' %}" alt="Налаштування"> Налаштування</li>
+                    <li><img src="{% static 'images/risk.jpg' %}" alt="Вийти"> Вийти</li>
                 </ul>
             </div>
         </div>
@@ -157,56 +159,110 @@ h2 {
             <a href="{% url 'create_project' project.id %}">{{ project.name }}</a>
         </li>
     {% endfor %}
-    <li>
-        <a href="{% url 'create_project' %}">Створити новий проект</a>
-    </li>
+
 </ul>
 
 </div>
 
 
-    <!-- Основна частина сторінки з контейнерами і карточками -->
-    <div class="content">
-        <!-- Контейнер "To Do" -->
-        <div class="container">
-            <h2>To Do</h2>
-            {% for task in todo_tasks %}
-                <div class="card">
-                    <h3>{{ project.name }}</h3>
-                    <p>{{ task.description }}</p>
-                    <p>Assigned to: {{ task.assigned_to.username }}</p>
-                    <p>Status: {{ task.status }}</p>
-                    <p>Due Date: {{ task.due_date }}</p>
-                </div>
-            {% endfor %}
-        </div>
 
-        <!-- Контейнер "Doing" -->
-        <div class="container">
-            <h2>Doing</h2>
-            <div class="card">
-                <h3>Завдання 3</h3>
-                <p>Опис завдання 3</p>
-            </div>
-            <div class="card">
-                <h3>Завдання 4</h3>
-                <p>Опис завдання 4</p>
-            </div>
-        </div>
-
-        <!-- Контейнер "Done" -->
-        <div class="container">
-            <h2>Done</h2>
-            <div class="card">
-                <h3>Завдання 5</h3>
-                <p>Опис завдання 5</p>
-            </div>
-            <div class="card">
-                <h3>Завдання 6</h3>
-                <p>Опис завдання 6</p>
-            </div>
-        </div>
+    <div class="toolbar">
+        <a href="{% url 'resource_list' %}">Ресурси</a>
+        <a href="{% url 'task_list' %}">Задачі</a>
     </div>
+
+
+<div class="content">
+    <!-- Контейнер "To Do" -->
+    <div class="container">
+        <h2>To Do</h2>
+        {% for task in todo_tasks %}
+            <div class="card" onclick="showForm('{{ task.id }}')">
+                <h3>{{ task.name }}</h3>
+                <p>Due Date: {{ task.due_date }}</p>
+
+            </div>
+        {% endfor %}
+        {% if not todo_tasks %}
+            <p>No tasks in this category.</p>
+        {% endif %}
+    </div>
+
+    <!-- Контейнер "Doing" -->
+    <div class="container">
+        <h2>Doing</h2>
+        {% for task in doing_tasks %}
+            <div class="card" onclick="showForm('{{ task.id }}')">
+                <h3>{{ task.name }}</h3>
+                <p>Due Date: {{ task.due_date }}</p>
+            </div>
+        {% endfor %}
+        {% if not doing_tasks %}
+            <p>No tasks in this category.</p>
+        {% endif %}
+    </div>
+
+    <!-- Контейнер "Done" -->
+    <div class="container">
+        <h2>Done</h2>
+        {% for task in done_tasks %}
+            <div class="card" onclick="showForm('{{ task.id }}')">
+                <h3>{{ task.name }}</h3>
+                <p>Due Date: {{ task.due_date }}</p>
+
+            </div>
+        {% endfor %}
+        {% if not done_tasks %}
+            <p>No tasks in this category.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+
+    function toggleUserWindow() {
+        var userWindow = document.querySelector('.user-window');
+        userWindow.style.display = (userWindow.style.display === 'none' || userWindow.style.display === '') ? 'block' : 'none';
+    }
+
+
+    var userImage = document.querySelector('.user-menu img');
+    userImage.addEventListener('click', toggleUserWindow);
+
+
+    var userOptions = document.querySelectorAll('.user-window li');
+    userOptions.forEach(function(option) {
+        option.addEventListener('click', toggleUserWindow);
+    });
+
+    function showForm(taskId) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+
+        fetch('/get_task_details/' + taskId + '/', {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': csrftoken,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                data.due_date = '';
+                if (document.getElementById('due_date')) {
+                    document.getElementById('due_date').value = data.due_date;
+                    document.getElementById('task_id').value = data.name;
+                    document.getElementById('task_name').value = data.name;
+                    document.getElementById('due_date').value = data.due_date;
+                    document.getElementById('editForm').classList.add('active');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+
 </body>
 </html>
 

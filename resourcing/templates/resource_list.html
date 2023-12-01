@@ -1,59 +1,215 @@
-{% load static %}
+<!-- templates/resource_list.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Управління ресурсами та проектами</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/resourse.css' %}">
-    <!-- Додайте інші стилі, скрипти та ресурси, які вам потрібні -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #c1bdba;
+        }
+
+        .toolbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .toolbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .toolbar a:hover {
+            background-color: #008080;
+            color: white;
+        }
+
+        .container {
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background: rgba(19, 35, 47, 0.9);
+            border-radius: 4px;
+            box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+        }
+
+        th, td {
+            border: 1px solid #a0b3b0;
+            padding: 12px;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        th {
+            background-color: #008080;
+        }
+
+        .editable {
+            cursor: pointer;
+            position: relative;
+            padding: 12px;
+            color: #ffffff;
+        }
+
+        .editable:hover {
+            background-color: #005454;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #008080;
+        }
+
+        a:hover {
+            color: #005454;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+            border: 0;
+            outline: none;
+            border-radius: 4px;
+            padding: 15px 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: #008080;
+            color: #ffffff;
+            transition: 0.5s ease;
+            -webkit-appearance: none;
+            text-decoration: none; /* Додайте цей рядок для усунення підчеркування з посилань, якщо необхідно */
+        }
+
+        .button:hover,
+        .button:focus {
+            background: #005454;
+            display: flex;
+            justify-content: center;
+        }
+
+        .button-block {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
-        <!-- Панель з кнопками та вікно акаунту -->
-        <div class="account">
-            <a href="#" class="account-button">Акаунт</a>
-            <div class="account-menu">
-                <ul>
-                    <li><a href="#">Профіль</a></li>
-                    <li><a href="#">Вихід</a></li>
-                </ul>
-            </div>
-        </div>
-        <ul class="nav">
-            <li><a href="{% url 'project_list' %}">Проекти</a></li>
-            <li><a href="{% url 'task_list' %}">Завдання</a></li>
-            <li><a href="{% url 'resource_list' %}">Ресурси</a></li>
-            <!-- Додайте інші кнопки за необхідності -->
-        </ul>
+
+    <div class="toolbar">
+        <a href="{% url 'task_list' %}">Завдання</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
     </div>
 
-    <div class="content">
-        <div class="resource-card">
-            <!-- Додавання ресурсу -->
-            <h3>Додати ресурс</h3>
-            <form class="resource-form">
-                <input type="text" placeholder="Назва ресурсу" name="resource-name">
-                <input type="text" placeholder="Тип ресурсу" name="resource-type">
-                <input type="number" placeholder="Доступність" name="resource-availability">
-                <input type="text" placeholder="Категорія" name="resource-category">
-                <input type="number" placeholder="Вартість" name="resource-cost">
-                <button type="submit">Зберегти</button>
-            </form>
-        </div>
-
-        <div class="project-card">
-            <!-- Створення проекту -->
-            <h3>Створити проект</h3>
-            <form class="project-form">
-                <input type="text" placeholder="Назва проекту" name="project-name">
-                <textarea placeholder="Опис проекту" name="project-description"></textarea>
-                <input type="date" placeholder="Початкова дата" name="project-start-date">
-                <input type="date" placeholder="Кінцева дата" name="project-end-date">
-                <input type="text" placeholder="Менеджер" name="project-manager">
-                <input type="text" placeholder="Статус" name="project-status">
-                <button type="submit">Створити</button>
-            </form>
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Список ресурсів</h1>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped" id="resourceTable">
+                <thead>
+                    <tr>
+                        <th>Назва ресурсу</th>
+                        <th>Опис</th>
+                        <th>Тип ресурсу</th>
+                        <th>Доступність</th>
+                        <th>Категорія</th>
+                        <th>Вартість</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for resource in resources %}
+                    <tr>
+                        <td class="editable" contenteditable="true">{{ resource.name }}</td>
+                        <td class="editable" contenteditable="true">{{ resource.description }}</td>
+                        <td class="editable" contenteditable="true">{{ resource.resource_type }}</td>
+                        <td class="editable" contenteditable="true">{{ resource.availability }}</td>
+                        <td class="editable" contenteditable="true">{{ resource.category }}</td>
+                        <td class="editable" contenteditable="true">{{ resource.cost }}</td>
+                        <td>
+                            <a href="/resources/{{ resource.id }}/edit/" class="button">Редагувати</a>
+                            <a href="/resources/{{ resource.id }}/delete/" class="button">Видалити</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/resources/new/" class="button">Додати ресурс</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var cells = document.querySelectorAll('.editable');
+
+        cells.forEach(function(cell) {
+            cell.addEventListener('input', function() {
+
+                var resourceId = cell.parentElement.dataset.resourceId;
+                var fieldName = cell.parentElement.dataset.fieldName;
+                var value = cell.innerText.trim();
+
+                fetch('/resources/' + resourceId + '/edit/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({
+                        field: fieldName,
+                        value: value,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+
+            if (data.status === 'success') {
+
+              button.closest('tr').remove();
+
+              alert('Task deleted successfully!');
+            } else {
+              console.error('Error deleting task:', data.message);
+            }
+          })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

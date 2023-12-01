@@ -1,0 +1,187 @@
+<!-- templates/edit_resource.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Resource</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        body {
+            background: #c1bdba;
+            font-family: 'Titillium Web', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            color: rgba(19, 35, 47, 0.9);
+            font-size: 3.5rem;
+        }
+
+        .form {
+            background: rgba(19, 35, 47, 0.9);
+            padding: 40px;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        input, textarea {
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: none;
+            background-image: none;
+            border: 1px solid #a0b3b0;
+            color: #ffffff;
+            border-radius: 4px;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        textarea {
+            border: 2px solid #a0b3b0;
+            resize: vertical;
+        }
+
+        .field-wrap {
+            margin-bottom: 20px;
+        }
+
+        .top-row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .top-row > div {
+            float: left;
+            width: 48%;
+            margin-right: 4%;
+        }
+
+        .top-row > div:last-child {
+            margin: 0;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+            border: 0;
+            outline: none;
+            border-radius: 4px;
+            padding: 15px 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: #008080;
+            color: #ffffff;
+            transition: 0.5s ease;
+            -webkit-appearance: none;
+        }
+
+        .button:hover,
+        .button:focus {
+            background: #005454;
+            display: flex;
+            justify-content: center;
+        }
+
+        .button-block {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Edit Resource</h1>
+
+    <form method="post" action="{% url 'edit_resource' resource.id %}" class="form" id="editResourceForm">
+        {% csrf_token %}
+        <div class="field-wrap">
+            <label for="id_name">Name</label>
+            {{ form.name }}
+        </div>
+        <div class="field-wrap">
+            <label for="id_description">Description</label>
+            {{ form.description }}
+        </div>
+        <div class="field-wrap">
+            <label for="id_resource_type">Resource Type</label>
+            {{ form.resource_type }}
+        </div>
+        <div class="field-wrap">
+            <label for="id_availability">Availability</label>
+            {{ form.availability }}
+        </div>
+        <div class="field-wrap">
+            <label for="id_category">Category</label>
+            {{ form.category }}
+        </div>
+        <div class="field-wrap">
+            <label for="id_cost">Cost</label>
+            {{ form.cost }}
+        </div>
+        <div class="button-block">
+            <button type="submit" class="button">Save Changes</button>
+        </div>
+    </form>
+
+    <a href="{% url 'resource_list' %}">Back to Resource List</a>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var editForm = document.getElementById('editResourceForm');
+
+            editForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                fetch(editForm.action, {
+                    method: 'POST',
+                    body: new FormData(editForm),
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.errors) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Invalid form data. Please check the errors.',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Resource updated successfully!',
+                        }).then(() => {
+                            window.location.href = '/resources/';
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
